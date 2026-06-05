@@ -2,8 +2,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from core.config import settings
+from core.database import Base, engine
 from utils.router_loader import include_feature_routers
 
+
+
+@app.on_event("startup")
+def startup():
+    Base.metadata.create_all(bind=engine)
 
 def create_app() -> FastAPI:
     app = FastAPI(
@@ -21,12 +27,14 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    @app.on_event("startup")
+    def startup():
+        Base.metadata.create_all(bind=engine)
+
     @app.get("/health", tags=["system"])
-    def health_check() -> dict[str, str]:
+    def health_check():
         return {"status": "ok"}
 
     include_feature_routers(app)
+
     return app
-
-
-app = create_app()
