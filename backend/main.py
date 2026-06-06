@@ -6,6 +6,12 @@ from core.database import Base, engine
 from utils.router_loader import include_feature_routers
 
 
+@app.get("/")
+def root():
+    return {
+        "message": "Welcome to TransactAI API",
+        "status": "running"
+    }
 def create_app() -> FastAPI:
     app = FastAPI(
         title=settings.app_name,
