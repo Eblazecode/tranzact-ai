@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = Field(default=30, alias="ACCESS_TOKEN_EXPIRE_MINUTES")
 
     model_config = SettingsConfigDict(
-        env_file=str(BASE_DIR / ".env"),
+        env_file=str(BASE_DIR / ".env.example"),
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",
