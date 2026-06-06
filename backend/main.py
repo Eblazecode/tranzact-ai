@@ -6,11 +6,6 @@ from core.database import Base, engine
 from utils.router_loader import include_feature_routers
 
 
-
-@app.on_event("startup")
-def startup():
-    Base.metadata.create_all(bind=engine)
-
 def create_app() -> FastAPI:
     app = FastAPI(
         title=settings.app_name,
@@ -32,9 +27,11 @@ def create_app() -> FastAPI:
         Base.metadata.create_all(bind=engine)
 
     @app.get("/health", tags=["system"])
-    def health_check():
+    def health_check() -> dict[str, str]:
         return {"status": "ok"}
 
     include_feature_routers(app)
-
     return app
+
+
+app = create_app()
