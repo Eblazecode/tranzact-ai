@@ -2,7 +2,7 @@
 import { getAccessToken } from "./auth";
 
 export function getApiBaseUrl() {
-  return (import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/+$/, "");
+  return (import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'https://tranzact-ai.onrender.com').replace(/\/+$/, "");
 }
 
 const API_BASE_URL = getApiBaseUrl();
