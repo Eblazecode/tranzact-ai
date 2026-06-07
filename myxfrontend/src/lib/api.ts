@@ -2,9 +2,15 @@
 import { getAccessToken } from "./auth";
 
 export function getApiBaseUrl() {
-  return (import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'https://tranzact-ai.onrender.com').replace(/\/+$/, "");
-}
+  const url =
+    import.meta.env.VITE_API_URL ??
+    import.meta.env.VITE_API_BASE_URL ??
+    "https://tranzact-ai.onrender.com";
 
+  console.log("API URL:", url);
+
+  return url.replace(/\/+$/, "");
+}
 const API_BASE_URL = getApiBaseUrl();
 
 export interface ApiResponse<T> {
