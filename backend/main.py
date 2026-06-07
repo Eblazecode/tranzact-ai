@@ -14,7 +14,6 @@ def create_app() -> FastAPI:
         redoc_url="/redoc",
     )
 
-    # CORS
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origins,
@@ -23,12 +22,10 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    # Startup Event
     @app.on_event("startup")
     def startup():
         Base.metadata.create_all(bind=engine)
 
-    # Root Endpoint
     @app.get("/", tags=["system"])
     def root():
         return {
@@ -36,14 +33,10 @@ def create_app() -> FastAPI:
             "status": "running"
         }
 
-    # Health Check
     @app.get("/health", tags=["system"])
     def health_check():
-        return {
-            "status": "ok"
-        }
+        return {"status": "ok"}
 
-    # Database Test
     @app.get("/db-test", tags=["system"])
     def db_test():
         try:
@@ -54,14 +47,18 @@ def create_app() -> FastAPI:
                 "database": "connected",
                 "status": "success"
             }
-
         except Exception as e:
             return {
                 "database": "failed",
                 "error": str(e)
             }
 
-    # Load Feature Routers
+    @app.get("/cors-test", tags=["system"])
+    def cors_test():
+        return {
+            "origins": settings.cors_origins
+        }
+
     include_feature_routers(app)
 
     return app
